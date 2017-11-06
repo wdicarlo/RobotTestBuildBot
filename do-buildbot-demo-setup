@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+
+virtualenv ve_buildbot
+source ve_buildbot/bin/activate
+pip install buildbot
+pip install buildbot-console-view
+pip install buildbot-grid-view
+pip install buildbot-waterfall-view
+pip install buildbot-worker
+pip install buildbot-www
+buildbot create-master master
+cp master.cfg master/master.cfg
+buildbot-worker create-worker worker localhost robottests-worker paperinik
+buildbot start master
+buildbot-worker start worker
+firefox localhost:8010 > /dev/null 2>&1 &
